@@ -1,8 +1,10 @@
 const express = require('express')
 const uuid = require('uuid')
+const cors = require('cors')
 const app = express()
 const users = []
 app.use(express.json())
+app.use(cors())
 
 const firstMiddleware = (req, res, next) => {
     const { id } = req.params
@@ -15,7 +17,6 @@ const firstMiddleware = (req, res, next) => {
     next()
 }
 
-// verificar usuário
 app.get('/user', (req, res) => {
     return res.status(201).json(users)
 })
