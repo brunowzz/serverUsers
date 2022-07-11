@@ -2,6 +2,7 @@ const express = require('express')
 const uuid = require('uuid')
 const cors = require('cors')
 const app = express()
+const port = process.env.PORT || 3003
 const users = []
 app.use(express.json())
 app.use(cors())
@@ -20,23 +21,14 @@ const firstMiddleware = (req, res, next) => {
 app.get('/user', (req, res) => {
     return res.status(201).json(users)
 })
-// criar usuário
+
 app.post('/user', (req, res) => {
     const { name, age} = req.body
     const newUser = {id: uuid.v4(), name, age}
     users.push(newUser)
     return res.status(201).json(newUser)
 })
-// atualizar usuário
-app.put('/user/:id', firstMiddleware, (req, res) => {
-    const { name, age } = req.body
-    const i = req.userIndex
-    const id = req.userId
-    const upUsers = { id, name, age}
-    users[i] = upUsers
-    return res.json(upUsers)
-})
-// deletar usuário
+
 app.delete('/user/:id', firstMiddleware, (req, res) => {
     const { name, age } = req.body
     const i = req.userIndex
@@ -44,7 +36,9 @@ app.delete('/user/:id', firstMiddleware, (req, res) => {
     users.splice(i , 1)
     return res.status(204).json()
 })
-app.listen(3003)
+app.listen(port, () => {
+    console.log(`Servidor está rodando`)
+})
 
 
 
